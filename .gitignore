@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /TodoApi/Todo.db
+/TodoApi/Todo.sqlite
+/TodoApi/Todo.sqlite-shm
+/TodoApi/Todo.sqlite-wal
