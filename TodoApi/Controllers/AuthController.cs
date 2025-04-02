@@ -23,8 +23,8 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
     {
-        var user = new User { UserName = request.UserName, Name = request.Name, Email = request.Email };
-        var result = await _repository.CreateUser(user, request.Password);
+        var user = new User { UserName = request.UserName, Name = request.Name ?? String.Empty, Email = request.Email };
+        var result = await _repository.CreateUser(user, request.Password ?? String.Empty);
 
         if (result.Succeeded) return Ok();
 
@@ -34,10 +34,10 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
     {
-        var user = await _repository.FindByEmail(request.Email);
+        var user = await _repository.FindByEmail(request.Email ?? String.Empty);
         if (user == null) return Unauthorized("Email não encontrado");
 
-        var isValidPassword = await _repository.CheckPassword(user, request.Password);
+        var isValidPassword = await _repository.CheckPassword(user, request.Password ?? String.Empty);
         if (!isValidPassword) return Unauthorized("Senha incorreta");
 
         var token = _authService.GenerateJwtToken(user);
